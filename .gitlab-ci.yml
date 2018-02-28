@@ -18,3 +18,10 @@ build:
     paths:
     - target/*.war
     expire_in: 1 week
+    
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "Deploy to staging server"
+  only:
+  - master
