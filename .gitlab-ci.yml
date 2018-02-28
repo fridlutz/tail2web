@@ -15,5 +15,5 @@ build:
     - mvn $MAVEN_CLI_OPTS compile
     
 artifacts:
-   paths:
-     - target/*.war
+  paths:
+  - target/*.war
