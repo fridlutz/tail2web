@@ -1,5 +1,11 @@
 image: maven:latest
 
+stages:
+  - build
+  - deploy
+  - clean
+
+
 variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
@@ -18,10 +24,43 @@ build:
     paths:
     - target/*.war
     expire_in: 1 week
-    
+
+
 deploy_staging:
   stage: deploy
   script:
-    - echo "Deploy to staging server"
+     - mvn $MAVEN_CLI_OPTS tomcat7:redeploy
+  environment:
+    name: staging
+    url: http://10.0.1.63:8888/tail2web/
   only:
   - master
+
+deploy_production:
+  stage: deploy
+  script:
+     - mvn $MAVEN_CLI_OPTS tomcat7:redeploy
+  environment:
+    name: production
+    url: http://10.0.1.63:8889/tail2web/
+  only:
+  - master
+  when: manual 
+
+undeploy_staging:
+  stage: clean
+  when: manual 
+  script:
+    - mvn $MAVEN_CLI_OPTS tomcat7:undeploy
+  environment:
+    name: staging
+    url: http://10.0.1.63:8888/tail2web/
+
+undeploy_production:
+  stage: clean
+  when: manual 
+  script:
+    - mvn $MAVEN_CLI_OPTS tomcat7:undeploy
+  environment:
+    name: production
+    url: http://10.0.1.63:8889/tail2web/
