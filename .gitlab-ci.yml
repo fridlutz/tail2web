@@ -20,12 +20,6 @@ build:
     expire_in: 1 week
 
 
-undeploy_staging:
-  when: manual 
-  script:
-    - mvn $MAVEN_CLI_OPTS tomcat7:undeploy
-
-
 deploy_staging:
   stage: deploy
   script:
@@ -35,3 +29,19 @@ deploy_staging:
     url: http://10.0.1.63:8888/tail2web/
   only:
   - master
+
+deploy_production:
+  stage: deploy
+  script:
+     - mvn $MAVEN_CLI_OPTS tomcat7:redeploy
+  environment:
+    name: staging
+    url: http://10.0.1.63:8889/tail2web/
+  only:
+  - master
+  when: manual 
+
+undeploy_staging:
+  when: manual 
+  script:
+    - mvn $MAVEN_CLI_OPTS tomcat7:undeploy
