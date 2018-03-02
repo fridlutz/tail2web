@@ -28,7 +28,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-			<pluginManagement>
+		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -46,6 +46,16 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://10.0.1.63:8888/manager/text</url>
+					<server>StagingServer8888</server>
+					<path>/tail2web</path>
 				</configuration>
 			</plugin>
 		</plugins>
