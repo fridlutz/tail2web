@@ -25,6 +25,6 @@ deploy_staging:
      - mvn $MAVEN_CLI_OPTS tomcat7:redeploy
   environment:
     name: staging
-    url: http://10.0.1.63:8888/
+    url: http://10.0.1.63:8888/tail2web/
   only:
   - master
