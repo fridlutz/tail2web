@@ -22,7 +22,7 @@ build:
 deploy_staging:
   stage: deploy
   script:
-    - echo "Deploy to staging server"
+     - mvn $MAVEN_CLI_OPTS tomcat7:redeploy
   environment:
     name: staging
     url: http://10.0.1.63:8888/
