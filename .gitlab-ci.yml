@@ -23,5 +23,8 @@ deploy_staging:
   stage: deploy
   script:
     - echo "Deploy to staging server"
+  environment:
+    name: staging
+    url: http://10.0.1.63:8888/
   only:
   - master
