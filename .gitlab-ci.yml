@@ -21,7 +21,7 @@ build:
 
 
 undeploy_staging:
-  when: on_redeploy_only 
+  when: manual 
   script:
     - mvn $MAVEN_CLI_OPTS tomcat7:undeploy
 
