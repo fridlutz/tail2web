@@ -53,11 +53,15 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<url>http://10.0.1.63:8888/manager/text</url>
-					<server>StagingServer8888</server>
-					<path>/tail2web</path>
+					<url>${tomcat-server-url}</url>
+					<server>${tomcat-server-name}</server>
+					<path>/${project.build.finalName}</path>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<properties>
+		<tomcat-server-name>DEFAULT_REPLACED_BY_GITLAB</tomcat-server-name>
+		<tomcat-server-url>DEFAULT_REPLACED_BY_GITLAB</tomcat-server-url>
+	</properties>
 </project>
