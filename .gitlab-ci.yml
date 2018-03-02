@@ -41,7 +41,7 @@ deploy_production:
   script:
      - mvn $MAVEN_CLI_OPTS tomcat7:redeploy
   environment:
-    name: staging
+    name: production
     url: http://10.0.1.63:8889/tail2web/
   only:
   - master
@@ -52,3 +52,15 @@ undeploy_staging:
   when: manual 
   script:
     - mvn $MAVEN_CLI_OPTS tomcat7:undeploy
+  environment:
+    name: staging
+    url: http://10.0.1.63:8888/tail2web/
+
+undeploy_production:
+  stage: clean
+  when: manual 
+  script:
+    - mvn $MAVEN_CLI_OPTS tomcat7:undeploy
+  environment:
+    name: production
+    url: http://10.0.1.63:8889/tail2web/
