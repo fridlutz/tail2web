@@ -18,7 +18,7 @@ cache:
 build:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS compile
+    - mvn $MAVEN_CLI_OPTS compile -Pproxy-on
     
   artifacts:
     paths:
@@ -29,7 +29,7 @@ build:
 deploy_staging:
   stage: deploy
   script:
-     - mvn $MAVEN_CLI_OPTS -Dtomcat-server-url=http://10.0.1.63:8888/manager/text -Dtomcat-server-name=StagingServer8888 tomcat7:redeploy
+     - mvn $MAVEN_CLI_OPTS -Dtomcat-server-url=http://10.0.1.63:8888/manager/text -Dtomcat-server-name=StagingServer8888 tomcat7:redeploy -Pproxy-on 
   environment:
     name: staging
     url: http://10.0.1.63:8888/tail2web/
@@ -39,7 +39,7 @@ deploy_staging:
 deploy_production:
   stage: deploy
   script:
-     - mvn $MAVEN_CLI_OPTS -Dtomcat-server-url=http://10.0.1.63:8889/manager/text -Dtomcat-server-name=ProductionServer8889 tomcat7:redeploy
+     - mvn $MAVEN_CLI_OPTS -Dtomcat-server-url=http://10.0.1.63:8889/manager/text -Dtomcat-server-name=ProductionServer8889 tomcat7:redeploy -Pproxy-on 
   environment:
     name: production
     url: http://10.0.1.63:8889/tail2web/
@@ -51,7 +51,7 @@ undeploy_staging:
   stage: clean
   when: manual 
   script:
-    - mvn $MAVEN_CLI_OPTS -Dtomcat-server-url=http://10.0.1.63:8888/manager/text -Dtomcat-server-name=StagingServer8888 tomcat7:undeploy 
+    - mvn $MAVEN_CLI_OPTS -Dtomcat-server-url=http://10.0.1.63:8888/manager/text -Dtomcat-server-name=StagingServer8888 tomcat7:undeploy -Pproxy-on 
   environment:
     name: staging
     url: http://10.0.1.63:8888/tail2web/
@@ -60,7 +60,7 @@ undeploy_production:
   stage: clean
   when: manual 
   script:
-    - mvn $MAVEN_CLI_OPTS -Dtomcat-server-url=http://10.0.1.63:8889/manager/text -Dtomcat-server-name=ProductionServer8889 tomcat7:undeploy
+    - mvn $MAVEN_CLI_OPTS -Dtomcat-server-url=http://10.0.1.63:8889/manager/text -Dtomcat-server-name=ProductionServer8889 tomcat7:undeploy -Pproxy-on 
   environment:
     name: production
     url: http://10.0.1.63:8889/tail2web/
