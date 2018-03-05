@@ -85,12 +85,12 @@
 									<version>${webapp-runner-version}</version>
 									<destFileName>webapp-runner.jar</destFileName>
 								</artifactItem>
-								<!-- <artifactItem>
+								<artifactItem>
 									<groupId>org.apache.tomcat.embed</groupId>
 									<artifactId>tomcat-embed-websocket</artifactId>
 									<version>${tomcat.version}</version>
 									<destFileName>tomcat-embed-websocket.jar</destFileName>
-								</artifactItem> -->
+								</artifactItem>
 							</artifactItems> 
 						</configuration>
 					</execution>
