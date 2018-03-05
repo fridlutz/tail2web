@@ -21,25 +21,29 @@
 </head>
 
 <body>
-
+	<a href="https://github.com/fridlutz/tail2web"><img
+		style="position: absolute; top: 0; right: 0; border: 0; z-index: 1500;"
+		src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+		alt="Fork me on GitHub"></a>
 	<header>
 		<div class="collapse bg-dark" id="navbarHeader">
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-8 col-md-7 py-4">
 						<h4 class="text-white">About</h4>
-						<p class="text-muted">Add some information about the album
-							below, the author, or any other background context. Make it a few
-							sentences long so folks can pick up some informative tidbits.
-							Then, link them off to some social networking sites or contact
-							information.</p>
+						<p class="text-muted">The implementation shows how to use and
+							combine the logging library log4j in combination with websockets
+							to create beautiful web tails of logs. The implementation uses annotations to create a custom appender that streams to all connected websocket clients.</p>
 					</div>
 					<div class="col-sm-4 offset-md-1 py-4">
 						<h4 class="text-white">Contact</h4>
 						<ul class="list-unstyled">
-							<li><a href="#" class="text-white">Follow on Twitter</a></li>
-							<li><a href="#" class="text-white">Like on Facebook</a></li>
-							<li><a href="#" class="text-white">Email me</a></li>
+							<li><a href="https://twitter.com/fridlutz"
+								class="text-white">Follow on Twitter</a></li>
+							<li><a href="https://github.com/fridlutz/tail2web"
+								class="text-white">Fork on Github</a></li>
+							<li><a href="mailto:me@mymess.org" class="text-white">Email
+									me</a></li>
 						</ul>
 					</div>
 				</div>
@@ -53,8 +57,8 @@
 				<div class="btn-group" role="group" aria-label="Action buttons">
 					<button id="start" type="button" class="btn btn-secondary">Start</button>
 					<button id="stop" type="button" class="btn btn-secondary">Stop</button>
-					<button style="width:100px;" id="status" class="btn btn-sm btn-danger"
-						disabled="disabled">
+					<button style="width: 100px;" id="status"
+						class="btn btn-sm btn-danger" disabled="disabled">
 						<span id="status_text">Offline</span>
 					</button>
 					<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -85,7 +89,7 @@
 		</div>
 	</section>
 
-	<div class="container" style="margin-top:30px;">
+	<div class="container" style="margin-top: 30px;">
 		<ul class="list-group" id="logpanel">
 
 		</ul>
@@ -125,8 +129,9 @@
 	<!-- WebSocket Javascript Methods -->
 	<!-- ================================================== -->
 	<script type="text/javascript">
-  		
-	    var url = (window.location.protocol === "https:" ? "wss:" : "ws:") + "//" + window.location.host + window.location.pathname + "weblog";
+		var url = (window.location.protocol === "https:" ? "wss:" : "ws:")
+				+ "//" + window.location.host + window.location.pathname
+				+ "weblog";
 
 		var webSocket = new WebSocket(url);
 
@@ -144,16 +149,16 @@
 
 		function onMessage(event) {
 			var before = document.getElementById('logpanel').innerHTML;
-			var newMessage = '<li class="list-group-item list-group-item-success">'+event.data;+'</li>';
-			document.getElementById('logpanel').innerHTML = newMessage
-					 + before;
+			var newMessage = '<li class="list-group-item list-group-item-success">'
+					+ event.data;
+			+'</li>';
+			document.getElementById('logpanel').innerHTML = newMessage + before;
 		}
 
 		function onOpen(event) {
 			var before = document.getElementById('logpanel').innerHTML;
 			var newMessage = '<li class="list-group-item list-group-item-success">Log engine available and successfully contacted.</li>';
-			document.getElementById('logpanel').innerHTML = newMessage
-					 + before;
+			document.getElementById('logpanel').innerHTML = newMessage + before;
 
 		}
 
