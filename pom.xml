@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.co.utz</groupId>
 	<artifactId>tail2web</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>0.0.1</version>
 	<name>tail2web Maven Webapp</name>
 	<url>http://maven.apache.org</url>
