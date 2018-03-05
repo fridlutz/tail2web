@@ -125,16 +125,10 @@
 	<!-- WebSocket Javascript Methods -->
 	<!-- ================================================== -->
 	<script type="text/javascript">
-  		var context = '<%=request.getContextPath()%>';
-		var host = window.location.hostname;
-		var port = window.location.port;
-		var protocol = window.location.protocol;
-		var wssprotocol = 'ws';
-		if (protocol == 'https:') {
-			wssprotocol = 'wss'
-		}
-		var webSocket = new WebSocket(wssprotocol + '://' + host + ':' + port
-				+ '/' + context + '/weblog');
+  		
+	    var url = (window.location.protocol === "https:" ? "wss:" : "ws:") + "//" + window.location.host + window.location.pathname + "weblog";
+
+		var webSocket = new WebSocket(url);
 
 		webSocket.onerror = function(event) {
 			onError(event)
