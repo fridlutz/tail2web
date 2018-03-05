@@ -134,7 +134,7 @@
 		</plugins>
 	</build>
 	<properties>
-		<tomcat.version>8.0.28</tomcat.version>
+		<tomcat.version>8.5.2</tomcat.version>
 		<tomcat-server-name>DEFAULT_REPLACED_BY_GITLAB</tomcat-server-name>
 		<tomcat-server-url>DEFAULT_REPLACED_BY_GITLAB</tomcat-server-url>
 	</properties>
