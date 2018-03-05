@@ -85,13 +85,13 @@
 									<version>${webapp-runner-version}</version>
 									<destFileName>webapp-runner.jar</destFileName>
 								</artifactItem>
-								<artifactItem>
+								<!-- <artifactItem>
 									<groupId>org.apache.tomcat.embed</groupId>
 									<artifactId>tomcat-embed-websocket</artifactId>
 									<version>${tomcat.version}</version>
 									<destFileName>tomcat-embed-websocket.jar</destFileName>
-								</artifactItem>
-							</artifactItems>
+								</artifactItem> -->
+							</artifactItems> 
 						</configuration>
 					</execution>
 				</executions>
@@ -100,7 +100,7 @@
 	</build>
 	<properties>
 		<tomcat.version>8.5.2</tomcat.version>
-		<webapp-runner-version>8.5.23.0</webapp-runner-version>
+		<webapp-runner-version>8.5.28.0</webapp-runner-version>
 		<tomcat-server-name>DEFAULT_REPLACED_BY_GITLAB</tomcat-server-name>
 		<tomcat-server-url>DEFAULT_REPLACED_BY_GITLAB</tomcat-server-url>
 	</properties>
