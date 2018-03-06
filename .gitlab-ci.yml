@@ -15,6 +15,11 @@ cache:
     - .m2/repository/
     - target/
 
+clean:
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS clean
+
 build:
   stage: build
   script:
