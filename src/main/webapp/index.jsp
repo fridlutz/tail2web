@@ -21,10 +21,6 @@
 </head>
 
 <body>
-	<a href="https://github.com/fridlutz/tail2web"><img
-		style="position: absolute; top: 0; right: 0; border: 0; z-index: 1500;"
-		src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
-		alt="Fork me on GitHub"></a>
 	<header>
 		<div class="collapse bg-dark" id="navbarHeader">
 			<div class="container">
@@ -81,11 +77,7 @@
 			<p class="lead text-muted">This example application is a
 				demonstration on how to present log information using websockets
 				with minimal implementation effort beautifully on the web.</p>
-			<p>
-				<a href="#" class="btn btn-primary my-2">Create an example log
-					entry (ERROR)</a> <a href="#" class="btn btn-secondary my-2">Create
-					an example log entry (WARN)</a>
-			</p>
+			<p class="lead text-muted">Author: <a href="https://github.com/fridlutz/tail2web">@fridlutz</a></p>
 		</div>
 	</section>
 
@@ -98,9 +90,9 @@
 
 	<footer class="footer">
 		<div class="container">
-			<span class="text-muted">This demonstration UI uses the Album
-				example from &copy; Bootstrap, available <a
-				href="https://getbootstrap.com/docs/4.0/examples/album/">online</a>.
+			<span class="text-muted">author: <a href="https://github.com/fridlutz/tail2web">@fridlutz</a> @note: this demonstration UI uses the Album
+				example from &copy;Bootstrap, available <a
+				href="https://getbootstrap.com/docs/4.0/examples/album/">online</a>
 			</span>
 		</div>
 	</footer>
@@ -149,7 +141,25 @@
 
 		function onMessage(event) {
 			var before = document.getElementById('logpanel').innerHTML;
-			var newMessage = '<li class="list-group-item list-group-item-success">'
+			var logJson = JSON.parse(event.data);
+			var cssClass = 'list-group-item-dark';
+			if (logJson.level == "DEBUG") {
+				cssClass='list-group-item-light';
+			}
+			else if (logJson.level == "INFO") {
+				cssClass='list-group-item-info';
+			}
+			else if (logJson.level == "WARN") {
+				cssClass='list-group-item-warning';
+			}
+			else if (logJson.level == "ERROR") {
+				cssClass='list-group-item-danger';
+			}
+			else if (logJson.level == "FATAL") {
+				cssClass='list-group-item-danger';
+			}
+
+			var newMessage = '<li class="list-group-item '+cssClass+'">'
 					+ event.data;
 			+'</li>';
 			document.getElementById('logpanel').innerHTML = newMessage + before;

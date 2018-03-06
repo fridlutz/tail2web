@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -14,9 +15,9 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
+import org.mymess.weblogger.dummy.TimedDummyLogging;
 
 /***
  * This implementation acts as a controller for logging messages using websocket
@@ -29,11 +30,14 @@ import org.apache.log4j.spi.LoggingEvent;
 @ServerEndpoint("/weblog")
 
 public class WebLogAppender extends AppenderSkeleton {
-    
-    @SuppressWarnings("unused")
+
     private static Logger log = Logger.getLogger(WebLogAppender.class);
 
     private static Set<Session> allSessions = Collections.synchronizedSet(new HashSet<Session>());
+
+    /* Dummy logger that issues a random message every second */
+    @SuppressWarnings("unused")
+    private static TimedDummyLogging dummy = TimedDummyLogging.getInstance();
 
     /***
      * register new session
@@ -47,22 +51,23 @@ public class WebLogAppender extends AppenderSkeleton {
     }
 
     @OnMessage
-    public void pushProcessLog(String loggingMessage, Session session) throws IOException, InterruptedException {
+    public void pushProcessLog(String loggingMessage, Session session)
+	    throws IOException, InterruptedException, EncodeException {
 
 	if (loggingMessage.equals("start")) {
 	    allSessions.add(session);
-	    session.getBasicRemote().sendText("Connection successfully established.");
+	    log.info("New client joined: " + session);
 	} else if (loggingMessage.equals("stop")) {
 	    if (allSessions.contains(session)) {
 		allSessions.remove(session);
-		session.getBasicRemote().sendText("Connection successfully stopped.");
+		log.info("Client disconnected: " + session);
+
 	    }
 	} else {
 	    if (allSessions.size() != 0) {
 		for (Iterator<Session> iterator = allSessions.iterator(); iterator.hasNext();) {
 		    Session registeredSession = iterator.next();
 		    registeredSession.getBasicRemote().sendText(loggingMessage);
-
 		}
 	    }
 	}
@@ -92,19 +97,20 @@ public class WebLogAppender extends AppenderSkeleton {
 
     @Override
     protected void append(LoggingEvent event) {
+
 	try {
-	    String color = "black";
-	    if (event.getLevel().equals(Level.WARN))
-		color = "red";
-	    pushProcessLog("<span style=\"color:" + color + "\">" + this.getLayout().format(event) + "</span>", null);
+	    pushProcessLog(this.getLayout().format(event), null);
+
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} catch (InterruptedException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
+	} catch (EncodeException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	}
-
     }
 
 }
