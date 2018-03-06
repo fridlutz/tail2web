@@ -99,6 +99,7 @@
 		</plugins>
 	</build>
 	<properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tomcat.version>8.5.2</tomcat.version>
 		<webapp-runner-version>8.5.28.0</webapp-runner-version>
 		<tomcat-server-name>DEFAULT_REPLACED_BY_GITLAB</tomcat-server-name>
