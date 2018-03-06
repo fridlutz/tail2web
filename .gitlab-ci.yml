@@ -15,6 +15,33 @@ cache:
     - .m2/repository/
     - target/
 
+
+before_script:
+  -echo '<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+	<proxies>
+		<proxy>
+			<active>${activate.proxy}</active>
+			<host>10.0.1.8</host>
+			<port>8000</port>
+		</proxy>
+	</proxies>
+	<servers>
+		<server>
+			<id>StagingServer8888</id>
+			<username>tomcat</username>
+			<password>s3cret</password>
+		</server>
+		<server>
+			<id>ProductionServer8889</id>
+			<username>tomcat</username>
+			<password>s3cret</password>
+		</server>
+	</servers>
+</settings>' > $HOME/.m2/settings.xml
+
 clean:
   stage: build
   script:
