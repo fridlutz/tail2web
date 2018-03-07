@@ -1,4 +1,4 @@
-[![pipeline status](https://git.boc-group.eu/wutz/tail2web/badges/master/pipeline.svg)](https://git.boc-group.eu/wutz/tail2web/commits/master)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=tail2weh)]
 
 
 tail2web application
