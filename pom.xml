@@ -1,12 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>at.co.utz</groupId>
+	<groupId>org.mymess</groupId>
 	<artifactId>tail2web</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1</version>
-	<name>tail2web Maven Webapp</name>
-	<url>http://maven.apache.org</url>
+	<name>Tail2Web Application</name>
+	<url>http://www.mymess.org</url>
+	<description>An example application to demonstrate how to present log information using websockets with minimal implementation effort beautifully on the web.</description>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -99,6 +100,7 @@
 		</plugins>
 	</build>
 	<properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tomcat.version>8.5.2</tomcat.version>
 		<webapp-runner-version>8.5.28.0</webapp-runner-version>
 		<tomcat-server-name>DEFAULT_REPLACED_BY_GITLAB</tomcat-server-name>
