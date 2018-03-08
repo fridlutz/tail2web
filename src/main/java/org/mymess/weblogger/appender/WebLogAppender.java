@@ -1,3 +1,4 @@
+/* Licensed under Apache-2.0 */
 package org.mymess.weblogger.appender;
 
 import java.io.IOException;
@@ -5,7 +6,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -13,104 +13,91 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 import org.mymess.weblogger.dummy.TimedDummyLogging;
 
-/***
- * This implementation acts as a controller for logging messages using websocket
- * technology
- * 
- * @author wilfridutz
+/**
+ * * This implementation acts as a controller for logging messages using websocket technology
  *
+ * @author wilfridutz
  */
-
 @ServerEndpoint("/weblog")
-
 public class WebLogAppender extends AppenderSkeleton {
 
-    private static Logger log = Logger.getLogger(WebLogAppender.class);
+  private static Logger log = Logger.getLogger(WebLogAppender.class);
 
-    private static Set<Session> allSessions = Collections.synchronizedSet(new HashSet<Session>());
+  private static Set<Session> allSessions = Collections.synchronizedSet(new HashSet<Session>());
 
-    /* Dummy logger that issues a random message every second */
-    @SuppressWarnings("unused")
-    private static TimedDummyLogging dummy = TimedDummyLogging.getInstance();
+  /* Dummy logger that issues a random message every second */
+  @SuppressWarnings("unused")
+  private static TimedDummyLogging dummy = TimedDummyLogging.getInstance();
 
-    /***
-     * register new session
-     * 
-     * @param session
-     */
+  /**
+   * register new session
+   *
+   * @param session
+   */
+  @OnOpen
+  public void registerSessions(Session session) {}
 
-    @OnOpen
-    public void registerSessions(Session session) {
+  @OnMessage
+  public void pushProcessLog(String loggingMessage, Session session)
+      throws IOException, InterruptedException, EncodeException {
 
+    if (loggingMessage.equals("start")) {
+      allSessions.add(session);
+      log.info("New client joined: " + session);
+    } else if (loggingMessage.equals("stop")) {
+      if (allSessions.contains(session)) {
+        allSessions.remove(session);
+        log.info("Client disconnected: " + session);
+      }
+    } else {
+      if (allSessions.size() != 0) {
+        Iterator<Session> iterator = allSessions.iterator();
+        while (iterator.hasNext()) {
+          Session registeredSession = iterator.next();
+          registeredSession.getBasicRemote().sendText(loggingMessage);
+        }
+      }
     }
+  }
 
-    @OnMessage
-    public void pushProcessLog(String loggingMessage, Session session)
-	    throws IOException, InterruptedException, EncodeException {
+  @OnError
+  public void onError(Throwable e) {
+    e.printStackTrace();
+  }
 
-	if (loggingMessage.equals("start")) {
-	    allSessions.add(session);
-	    log.info("New client joined: " + session);
-	} else if (loggingMessage.equals("stop")) {
-	    if (allSessions.contains(session)) {
-		allSessions.remove(session);
-		log.info("Client disconnected: " + session);
+  @OnClose
+  public void onClose(Session session) {
+    allSessions.remove(session);
+  }
 
-	    }
-	} else {
-	    if (allSessions.size() != 0) {
-		for (Iterator<Session> iterator = allSessions.iterator(); iterator.hasNext();) {
-		    Session registeredSession = iterator.next();
-		    registeredSession.getBasicRemote().sendText(loggingMessage);
-		}
-	    }
-	}
+  @Override
+  public void close() {}
 
+  @Override
+  public boolean requiresLayout() {
+    return true;
+  }
+
+  @Override
+  protected void append(LoggingEvent event) {
+
+    try {
+      pushProcessLog(this.getLayout().format(event), null);
+
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (EncodeException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-
-    @OnError
-    public void onError(Throwable e) {
-	e.printStackTrace();
-    }
-
-    @OnClose
-    public void onClose(Session session) {
-	allSessions.remove(session);
-
-    }
-
-    @Override
-    public void close() {
-
-    }
-
-    @Override
-    public boolean requiresLayout() {
-	return true;
-    }
-
-    @Override
-    protected void append(LoggingEvent event) {
-
-	try {
-	    pushProcessLog(this.getLayout().format(event), null);
-
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	} catch (InterruptedException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	} catch (EncodeException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-    }
-
+  }
 }
