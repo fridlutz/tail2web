@@ -1,6 +1,5 @@
 package org.mymess.weblogger.appender;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.Test;
 import org.mymess.weblogger.dummy.TimedDummyLogging;
 import junit.framework.Assert;
@@ -18,6 +17,6 @@ public class TimedDummyLoggingTest {
     TimedDummyLogging logger = TimedDummyLogging.getInstance();
     Assert.assertNotNull(logger.getMessageSize());
     Thread.sleep(5000);
-    assertTrue(logger.getMessageSize() > 0);
+    Assert.assertTrue(logger.getMessageSize() > 0);
   }
 }
