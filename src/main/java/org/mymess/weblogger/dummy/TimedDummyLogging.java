@@ -15,6 +15,8 @@ public class TimedDummyLogging {
   static TimedDummyLogging timedLogger;
   List<String> messages;
 
+
+
   public TimedDummyLogging() {
     Timer timer = new Timer();
     messages = new ArrayList<String>();
@@ -22,7 +24,7 @@ public class TimedDummyLogging {
       public void run() {
         doLogging();
       }
-    }, 0, 2000);
+    }, 2000, 2000);
   }
 
   public static TimedDummyLogging getInstance() {

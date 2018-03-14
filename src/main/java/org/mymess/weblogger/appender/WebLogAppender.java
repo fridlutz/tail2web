@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -23,11 +24,11 @@ import org.mymess.weblogger.dummy.TimedDummyLogging;
  *
  * @author wilfridutz
  */
+
+@ApplicationScoped
 @ServerEndpoint("/weblog")
 public class WebLogAppender extends AppenderSkeleton {
-
   private static Logger log = Logger.getLogger(WebLogAppender.class);
-
   private static Set<Session> allSessions = Collections.synchronizedSet(new HashSet<Session>());
 
   /* Dummy logger that issues a random message every second */
@@ -38,13 +39,17 @@ public class WebLogAppender extends AppenderSkeleton {
    * register new session
    *
    * @param session
+   * @throws IOException
    */
   @OnOpen
-  public void registerSessions(Session session) {}
+  public void registerSessions(Session session) throws IOException {
+    session.getBasicRemote().sendText("Connection available");
+  }
 
   @OnMessage
   public void pushProcessLog(String loggingMessage, Session session)
       throws IOException, InterruptedException, EncodeException {
+
 
     if (loggingMessage.equals("start")) {
       allSessions.add(session);
@@ -54,6 +59,8 @@ public class WebLogAppender extends AppenderSkeleton {
         allSessions.remove(session);
         log.info("Client disconnected: " + session);
       }
+      // respond to requester
+      session.getBasicRemote().sendText("Client disconnected");
     } else {
       if (allSessions.size() != 0) {
         Iterator<Session> iterator = allSessions.iterator();
@@ -67,7 +74,7 @@ public class WebLogAppender extends AppenderSkeleton {
 
   @OnError
   public void onError(Throwable e) {
-    e.printStackTrace();
+    log.error(e.fillInStackTrace());
   }
 
   @OnClose
