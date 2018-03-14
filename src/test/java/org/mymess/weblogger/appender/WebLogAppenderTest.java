@@ -1,6 +1,5 @@
 package org.mymess.weblogger.appender;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.net.URI;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -87,7 +86,7 @@ public class WebLogAppenderTest {
     try {
       session = container.connectToServer(new ClientTestEndpoint(), cec, new URI(SERVER_URL));
       // a valid session (not null) is an indication that the server could connect
-      assertNotNull(session);
+      Assert.assertNotNull(session);
 
 
       messageLatch = new CountDownLatch(1);
