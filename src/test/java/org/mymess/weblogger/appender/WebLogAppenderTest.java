@@ -127,6 +127,7 @@ public class WebLogAppenderTest {
       Assert.assertTrue(onMessageReponse.contains("Client disconnected"));
 
 
+
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -134,6 +135,8 @@ public class WebLogAppenderTest {
 
 
   }
+
+
 
   class ClientTestEndpoint extends Endpoint {
 

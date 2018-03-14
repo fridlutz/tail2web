@@ -46,27 +46,32 @@ public class WebLogAppender extends AppenderSkeleton {
   }
 
   @OnMessage
-  public void pushProcessLog(String loggingMessage, Session session) throws IOException {
+  public void pushProcessLog(String loggingMessage, Session session) {
+    try {
+      if (loggingMessage.equals("start")) {
+        allSessions.add(session);
+        log.info("New client joined: " + session);
+      } else if (loggingMessage.equals("stop")) {
+        if (allSessions.contains(session)) {
+          allSessions.remove(session);
+          log.info("Client disconnected: " + session);
+        }
+        // respond to requester
 
+        session.getBasicRemote().sendText("Client disconnected");
 
-    if (loggingMessage.equals("start")) {
-      allSessions.add(session);
-      log.info("New client joined: " + session);
-    } else if (loggingMessage.equals("stop")) {
-      if (allSessions.contains(session)) {
-        allSessions.remove(session);
-        log.info("Client disconnected: " + session);
-      }
-      // respond to requester
-      session.getBasicRemote().sendText("Client disconnected");
-    } else {
-      if (allSessions.size() != 0) {
-        Iterator<Session> iterator = allSessions.iterator();
-        while (iterator.hasNext()) {
-          Session registeredSession = iterator.next();
-          registeredSession.getBasicRemote().sendText(loggingMessage);
+      } else {
+        if (allSessions.size() != 0) {
+          Iterator<Session> iterator = allSessions.iterator();
+          while (iterator.hasNext()) {
+            Session registeredSession = iterator.next();
+            registeredSession.getBasicRemote().sendText(loggingMessage);
+          }
         }
       }
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
   }
 
@@ -81,21 +86,21 @@ public class WebLogAppender extends AppenderSkeleton {
   }
 
   @Override
-  public void close() {}
+  public void close() {
+    this.closed = true;
+  }
 
   @Override
   public boolean requiresLayout() {
     return true;
   }
 
+  public boolean isClosed() {
+    return this.closed;
+  }
+
   @Override
   protected void append(LoggingEvent event) {
-
-    try {
-      pushProcessLog(this.getLayout().format(event), null);
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    pushProcessLog(this.getLayout().format(event), null);
   }
 }
