@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
-import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -47,8 +46,7 @@ public class WebLogAppender extends AppenderSkeleton {
   }
 
   @OnMessage
-  public void pushProcessLog(String loggingMessage, Session session)
-      throws IOException, InterruptedException, EncodeException {
+  public void pushProcessLog(String loggingMessage, Session session) throws IOException {
 
 
     if (loggingMessage.equals("start")) {
@@ -97,10 +95,6 @@ public class WebLogAppender extends AppenderSkeleton {
       pushProcessLog(this.getLayout().format(event), null);
 
     } catch (IOException e) {
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (EncodeException e) {
       e.printStackTrace();
     }
   }
