@@ -97,13 +97,10 @@ public class WebLogAppender extends AppenderSkeleton {
       pushProcessLog(this.getLayout().format(event), null);
 
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     } catch (EncodeException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }

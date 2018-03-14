@@ -49,7 +49,7 @@ public class TimedDummyLogging {
       log.warn(msg);
     else if (n == 4)
       log.error(msg);
-    else if (n == 5)
+    else
       log.fatal(msg);
     messages.add(msg);
   }
