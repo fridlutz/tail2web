@@ -20,10 +20,10 @@ public class TimedDummyLoggingTest {
     for (int i = 0; i < 500; i++) {
       logger.doLogging();
     }
-    Assert.assertEquals(500, logger.getMessageSize());
-    // wait for timer to start and check again
-    Thread.sleep(3000);
-    Assert.assertEquals(501, logger.getMessageSize());
+    Assert.assertTrue(logger.getMessageSize() >= 500);
+
+    Thread.sleep(5000);
+    Assert.assertTrue(logger.getMessageSize() > 500);
   }
 
 }
