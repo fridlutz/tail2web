@@ -1,6 +1,5 @@
 package org.mymess.weblogger.appender;
 
-import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,10 +23,5 @@ public class WebLogAppenderStaticTest {
   public void testNullPointerException() {
     appender.append(null);
     appender.pushProcessLog(null, null);
-  }
-
-  @Test(expected = IOException.class)
-  public void testIOException() {
-
   }
 }

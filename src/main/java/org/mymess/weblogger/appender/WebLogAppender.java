@@ -49,16 +49,27 @@ public class WebLogAppender extends AppenderSkeleton {
   public void pushProcessLog(String loggingMessage, Session session) {
     try {
       if (loggingMessage.equals("start")) {
-        allSessions.add(session);
-        log.info("New client joined: " + session);
+        if (!allSessions.contains(session)) {
+          allSessions.add(session);
+          log.info("New client joined: " + session);
+        } else {
+          // throw exception, if client is already connected
+          session.getBasicRemote().sendText("Client already connected");
+          throw new IOException();
+        }
       } else if (loggingMessage.equals("stop")) {
         if (allSessions.contains(session)) {
           allSessions.remove(session);
           log.info("Client disconnected: " + session);
-        }
-        // respond to requester
 
-        session.getBasicRemote().sendText("Client disconnected");
+          // respond to requester
+
+          session.getBasicRemote().sendText("Client disconnected");
+          session.close();
+        } else {
+          // throw exception, if client is already connected
+          throw new IOException();
+        }
 
       } else {
         if (allSessions.size() != 0) {
@@ -70,19 +81,20 @@ public class WebLogAppender extends AppenderSkeleton {
         }
       }
     } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      onError(e);
     }
   }
 
+
   @OnError
-  public void onError(Throwable e) {
-    log.error(e.fillInStackTrace());
+  public void onError(Throwable t) {
+    log.error(t.fillInStackTrace());
   }
 
   @OnClose
-  public void onClose(Session session) {
+  public void onClose(Session session) throws IOException {
     allSessions.remove(session);
+    session.close();
   }
 
   @Override

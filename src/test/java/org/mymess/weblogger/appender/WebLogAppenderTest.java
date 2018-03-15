@@ -99,7 +99,7 @@ public class WebLogAppenderTest {
       Assert.assertEquals("Connection available", onMessageReponse);
 
 
-      // perform a test to check what happens when triggering a "start"
+      // perform a test to check triggering a "start"
       messageLatch = new CountDownLatch(1);
       session.getBasicRemote().sendText("start");
       boolean startMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
@@ -109,12 +109,25 @@ public class WebLogAppenderTest {
       // basic string comparison
       Assert.assertTrue(onMessageReponse.contains("New client joined"));
 
+      // perform a second connection -> throws an error
+      messageLatch = new CountDownLatch(1);
+      session.getBasicRemote().sendText("start");
+      boolean restartMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
+      Assert.assertTrue("Time lapsed before message was received by client.",
+          restartMessageReceivedByClient);
+      // message should contain "New client joined", JSON parsing is not performed in test, but
+      // basic string comparison
+      System.out.println(onMessageReponse);
+      Assert.assertTrue(onMessageReponse.contains("Client already connected"));
+
+
       // reset counter and wait for incoming messages from timer (2secs ramp up, every 2 secs a
       // message
       // 10 secs = 5 messages -> ramp up is covered during init, it seems
       messageCount = 0;
       Thread.sleep(10000);
       Assert.assertTrue(messageCount > 3);
+
 
 
       // perform a test to check what happens when triggering a "stop"
@@ -127,6 +140,10 @@ public class WebLogAppenderTest {
       Assert.assertTrue(onMessageReponse.contains("Client disconnected"));
 
 
+      session.getBasicRemote().sendText("stop");
+      boolean afterStopMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
+      Assert.assertTrue("Time lapsed before message was received by client.",
+          afterStopMessageReceivedByClient);
 
     } catch (Exception e) {
       e.printStackTrace();
