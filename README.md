@@ -2,3 +2,4 @@
 [![codecov](https://codecov.io/gh/fridlutz/tail2web/branch/master/graph/badge.svg)](https://codecov.io/gh/fridlutz/tail2web)
 
 tail2web application
+TODO: add screenshot
