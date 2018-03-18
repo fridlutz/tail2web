@@ -1,3 +1,4 @@
+/* Licensed under Apache-2.0 */
 package org.mymess.weblogger.appender;
 
 import java.net.URI;
@@ -25,7 +26,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
 public class WebLogAppenderTest {
 
   private static Tomcat tomcat;
@@ -37,15 +37,15 @@ public class WebLogAppenderTest {
   private static final String SERVER_URL = "ws://localhost:9999/weblog";
   private static ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
 
-
-
   public static class WebLogAppenderTestConfig extends WsContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
       super.contextInitialized(sce);
-      ServerContainer sc = (ServerContainer) sce.getServletContext()
-          .getAttribute(Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
+      ServerContainer sc =
+          (ServerContainer)
+              sce.getServletContext()
+                  .getAttribute(Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
       try {
         sc.addEndpoint(WebLogAppender.class);
       } catch (DeploymentException e) {
@@ -53,7 +53,6 @@ public class WebLogAppenderTest {
       }
     }
   }
-
 
   @BeforeClass
   public static void setUp()
@@ -76,7 +75,6 @@ public class WebLogAppenderTest {
     tomcat.stop();
   }
 
-
   @Test
   public void testOpenSocket() throws InterruptedException {
     WebSocketContainer container = ContainerProvider.getWebSocketContainer();
@@ -88,23 +86,21 @@ public class WebLogAppenderTest {
       // a valid session (not null) is an indication that the server could connect
       Assert.assertNotNull(session);
 
-
       messageLatch = new CountDownLatch(1);
       boolean openMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
 
       // check whether a message was received by the client
-      Assert.assertTrue("Time lapsed before message was received by client.",
-          openMessageReceivedByClient);
+      Assert.assertTrue(
+          "Time lapsed before message was received by client.", openMessageReceivedByClient);
       // check message received when opening
       Assert.assertEquals("Connection available", onMessageReponse);
-
 
       // perform a test to check triggering a "start"
       messageLatch = new CountDownLatch(1);
       session.getBasicRemote().sendText("start");
       boolean startMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
-      Assert.assertTrue("Time lapsed before message was received by client.",
-          startMessageReceivedByClient);
+      Assert.assertTrue(
+          "Time lapsed before message was received by client.", startMessageReceivedByClient);
       // message should contain "New client joined", JSON parsing is not performed in test, but
       // basic string comparison
       Assert.assertTrue(onMessageReponse.contains("New client joined"));
@@ -113,13 +109,12 @@ public class WebLogAppenderTest {
       messageLatch = new CountDownLatch(1);
       session.getBasicRemote().sendText("start");
       boolean restartMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
-      Assert.assertTrue("Time lapsed before message was received by client.",
-          restartMessageReceivedByClient);
+      Assert.assertTrue(
+          "Time lapsed before message was received by client.", restartMessageReceivedByClient);
       // message should contain "New client joined", JSON parsing is not performed in test, but
       // basic string comparison
       System.out.println(onMessageReponse);
       Assert.assertTrue(onMessageReponse.contains("Client already connected"));
-
 
       // reset counter and wait for incoming messages from timer (2secs ramp up, every 2 secs a
       // message
@@ -128,48 +123,44 @@ public class WebLogAppenderTest {
       Thread.sleep(10000);
       Assert.assertTrue(messageCount > 3);
 
-
-
       // perform a test to check what happens when triggering a "stop"
       messageLatch = new CountDownLatch(1);
       session.getBasicRemote().sendText("stop");
       boolean stopMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
-      Assert.assertTrue("Time lapsed before message was received by client.",
-          stopMessageReceivedByClient);
+      Assert.assertTrue(
+          "Time lapsed before message was received by client.", stopMessageReceivedByClient);
       // message should contain "Client disconnected"
       Assert.assertTrue(onMessageReponse.contains("Client disconnected"));
 
-
       session.getBasicRemote().sendText("stop");
       boolean afterStopMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
-      Assert.assertTrue("Time lapsed before message was received by client.",
-          afterStopMessageReceivedByClient);
+      Assert.assertTrue(
+          "Time lapsed before message was received by client.", afterStopMessageReceivedByClient);
+      session.getBasicRemote().sendText("stop");
+      afterStopMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
+      Assert.assertTrue(
+          "Time lapsed before message was received by client.", afterStopMessageReceivedByClient);
 
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-
-
   }
-
-
 
   class ClientTestEndpoint extends Endpoint {
 
     @Override
     public void onOpen(Session session, EndpointConfig config) {
 
-      session.addMessageHandler(new MessageHandler.Whole<String>() {
-        @Override
-        public void onMessage(String message) {
-          onMessageReponse = message;
-          messageCount++;
-          // trigger that response was received
-          messageLatch.countDown();
-        }
-      });
+      session.addMessageHandler(
+          new MessageHandler.Whole<String>() {
+            @Override
+            public void onMessage(String message) {
+              onMessageReponse = message;
+              messageCount++;
+              // trigger that response was received
+              messageLatch.countDown();
+            }
+          });
     }
   }
 }
-

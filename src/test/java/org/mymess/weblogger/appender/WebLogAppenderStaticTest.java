@@ -1,3 +1,4 @@
+/* Licensed under Apache-2.0 */
 package org.mymess.weblogger.appender;
 
 import org.junit.Assert;
@@ -5,7 +6,6 @@ import org.junit.Test;
 
 public class WebLogAppenderStaticTest {
   private WebLogAppender appender = new WebLogAppender();
-
 
   @Test
   public void staticWebLogger() {
@@ -15,8 +15,6 @@ public class WebLogAppenderStaticTest {
 
     appender.close();
     Assert.assertTrue(appender.isClosed());
-
-
   }
 
   @Test(expected = NullPointerException.class)

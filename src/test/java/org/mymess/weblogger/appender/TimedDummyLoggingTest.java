@@ -1,8 +1,9 @@
+/* Licensed under Apache-2.0 */
 package org.mymess.weblogger.appender;
 
+import junit.framework.Assert;
 import org.junit.Test;
 import org.mymess.weblogger.dummy.TimedDummyLogging;
-import junit.framework.Assert;
 
 public class TimedDummyLoggingTest {
 
@@ -25,5 +26,4 @@ public class TimedDummyLoggingTest {
     Thread.sleep(5000);
     Assert.assertTrue(logger.getMessageSize() > 500);
   }
-
 }

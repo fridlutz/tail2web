@@ -15,21 +15,21 @@ public class TimedDummyLogging {
   static TimedDummyLogging timedLogger;
   List<String> messages;
 
-
-
   public TimedDummyLogging() {
     Timer timer = new Timer();
     messages = new ArrayList<String>();
-    timer.scheduleAtFixedRate(new TimerTask() {
-      public void run() {
-        doLogging();
-      }
-    }, 2000, 2000);
+    timer.scheduleAtFixedRate(
+        new TimerTask() {
+          public void run() {
+            doLogging();
+          }
+        },
+        2000,
+        2000);
   }
 
   public static TimedDummyLogging getInstance() {
-    if (timedLogger == null)
-      timedLogger = new TimedDummyLogging();
+    if (timedLogger == null) timedLogger = new TimedDummyLogging();
     return timedLogger;
   }
 
@@ -41,16 +41,11 @@ public class TimedDummyLogging {
     String msg = "Random Message " + UUID.randomUUID();
     Random rand = new Random();
     int n = rand.nextInt(5) + 1;
-    if (n == 1)
-      log.debug(msg);
-    else if (n == 2)
-      log.info(msg);
-    else if (n == 3)
-      log.warn(msg);
-    else if (n == 4)
-      log.error(msg);
-    else
-      log.fatal(msg);
+    if (n == 1) log.debug(msg);
+    else if (n == 2) log.info(msg);
+    else if (n == 3) log.warn(msg);
+    else if (n == 4) log.error(msg);
+    else log.fatal(msg);
     messages.add(msg);
   }
 }

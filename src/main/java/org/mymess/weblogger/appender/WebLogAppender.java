@@ -23,7 +23,6 @@ import org.mymess.weblogger.dummy.TimedDummyLogging;
  *
  * @author wilfridutz
  */
-
 @ApplicationScoped
 @ServerEndpoint("/weblog")
 public class WebLogAppender extends AppenderSkeleton {
@@ -84,7 +83,6 @@ public class WebLogAppender extends AppenderSkeleton {
       onError(e);
     }
   }
-
 
   @OnError
   public void onError(Throwable t) {
