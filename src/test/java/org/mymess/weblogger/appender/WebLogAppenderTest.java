@@ -42,10 +42,8 @@ public class WebLogAppenderTest {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
       super.contextInitialized(sce);
-      ServerContainer sc =
-          (ServerContainer)
-              sce.getServletContext()
-                  .getAttribute(Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
+      ServerContainer sc = (ServerContainer) sce.getServletContext()
+          .getAttribute(Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
       try {
         sc.addEndpoint(WebLogAppender.class);
       } catch (DeploymentException e) {
@@ -90,8 +88,8 @@ public class WebLogAppenderTest {
       boolean openMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
 
       // check whether a message was received by the client
-      Assert.assertTrue(
-          "Time lapsed before message was received by client.", openMessageReceivedByClient);
+      Assert.assertTrue("Time lapsed before message was received by client.",
+          openMessageReceivedByClient);
       // check message received when opening
       Assert.assertEquals("Connection available", onMessageReponse);
 
@@ -99,8 +97,8 @@ public class WebLogAppenderTest {
       messageLatch = new CountDownLatch(1);
       session.getBasicRemote().sendText("start");
       boolean startMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
-      Assert.assertTrue(
-          "Time lapsed before message was received by client.", startMessageReceivedByClient);
+      Assert.assertTrue("Time lapsed before message was received by client.",
+          startMessageReceivedByClient);
       // message should contain "New client joined", JSON parsing is not performed in test, but
       // basic string comparison
       Assert.assertTrue(onMessageReponse.contains("New client joined"));
@@ -109,8 +107,8 @@ public class WebLogAppenderTest {
       messageLatch = new CountDownLatch(1);
       session.getBasicRemote().sendText("start");
       boolean restartMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
-      Assert.assertTrue(
-          "Time lapsed before message was received by client.", restartMessageReceivedByClient);
+      Assert.assertTrue("Time lapsed before message was received by client.",
+          restartMessageReceivedByClient);
       // message should contain "New client joined", JSON parsing is not performed in test, but
       // basic string comparison
       System.out.println(onMessageReponse);
@@ -127,19 +125,15 @@ public class WebLogAppenderTest {
       messageLatch = new CountDownLatch(1);
       session.getBasicRemote().sendText("stop");
       boolean stopMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
-      Assert.assertTrue(
-          "Time lapsed before message was received by client.", stopMessageReceivedByClient);
+      Assert.assertTrue("Time lapsed before message was received by client.",
+          stopMessageReceivedByClient);
       // message should contain "Client disconnected"
       Assert.assertTrue(onMessageReponse.contains("Client disconnected"));
 
       session.getBasicRemote().sendText("stop");
       boolean afterStopMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
-      Assert.assertTrue(
-          "Time lapsed before message was received by client.", afterStopMessageReceivedByClient);
-      session.getBasicRemote().sendText("stop");
-      afterStopMessageReceivedByClient = messageLatch.await(30, TimeUnit.SECONDS);
-      Assert.assertTrue(
-          "Time lapsed before message was received by client.", afterStopMessageReceivedByClient);
+      Assert.assertTrue("Time lapsed before message was received by client.",
+          afterStopMessageReceivedByClient);
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -151,16 +145,15 @@ public class WebLogAppenderTest {
     @Override
     public void onOpen(Session session, EndpointConfig config) {
 
-      session.addMessageHandler(
-          new MessageHandler.Whole<String>() {
-            @Override
-            public void onMessage(String message) {
-              onMessageReponse = message;
-              messageCount++;
-              // trigger that response was received
-              messageLatch.countDown();
-            }
-          });
+      session.addMessageHandler(new MessageHandler.Whole<String>() {
+        @Override
+        public void onMessage(String message) {
+          onMessageReponse = message;
+          messageCount++;
+          // trigger that response was received
+          messageLatch.countDown();
+        }
+      });
     }
   }
 }

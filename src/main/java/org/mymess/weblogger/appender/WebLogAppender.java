@@ -62,12 +62,8 @@ public class WebLogAppender extends AppenderSkeleton {
           log.info("Client disconnected: " + session);
 
           // respond to requester
-
           session.getBasicRemote().sendText("Client disconnected");
           session.close();
-        } else {
-          // throw exception, if client is already connected
-          throw new IOException();
         }
 
       } else {
