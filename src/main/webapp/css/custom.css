@@ -59,3 +59,8 @@ body > .container {
 code {
   font-size: 80%;
 }
+
+.feather-32{
+    width: 32px;
+    height: 32px;
+}
