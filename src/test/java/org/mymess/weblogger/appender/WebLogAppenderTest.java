@@ -4,6 +4,8 @@ package org.mymess.weblogger.appender;
 import java.net.URI;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 import javax.websocket.ClientEndpointConfig;
 import javax.websocket.ContainerProvider;
@@ -25,7 +27,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import jakarta.servlet.ServletContextEvent;
 
 public class WebLogAppenderTest {
 
@@ -64,7 +65,7 @@ public class WebLogAppenderTest {
 
     context.addApplicationListener(WebLogAppenderTestConfig.class.getName());
     Tomcat.addServlet(context, "default", new DefaultServlet());
-    context.addServletMappingDecoded("/", "default");
+    context.addServletMapping("/", "default");
     tomcat.init();
     tomcat.start();
   }
