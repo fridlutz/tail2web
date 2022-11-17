@@ -152,6 +152,6 @@
 		<webapp-runner-version>8.5.28.0</webapp-runner-version>
 		<tomcat-server-name>DEFAULT_REPLACED_BY_GITLAB</tomcat-server-name>
 		<tomcat-server-url>DEFAULT_REPLACED_BY_GITLAB</tomcat-server-url>
-		<spotless.version>1.0.0.BETA4</spotless.version>
+		<spotless.version>1.20.0</spotless.version>
 	</properties>
 </project>
